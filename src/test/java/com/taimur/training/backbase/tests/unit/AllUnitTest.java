@@ -6,6 +6,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(JUnitPlatform.class)
 @SelectPackages("com.taimur.training.backbase.tests.unit")
-public class AllUnitTests {
+public class AllUnitTest {
 
 }
