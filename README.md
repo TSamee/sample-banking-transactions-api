@@ -1,6 +1,6 @@
 # Simple Banking Transactions API
 
-This project serves a REST API conveying transaction data from the Open Bank Sandbox API as simple, flat JSON. The API is secured with basic auth.
+This project serves a REST API conveying transaction data from the Open Bank Sandbox API as simple, flat JSON. Transactions are cached for 60 seconds following each request. The API is secured with basic auth.
 
 The API currently supports 3 endpoints:
 - `{bank}/transactions` -- Returns a list of all transactions for the provided bank ID
@@ -23,6 +23,6 @@ The API currently supports 3 endpoints:
 
 ## Known issues & limitations
 - Limited to transactions in the Open Bank Sandbox public API
-- Need for caching Open Bank responses: requests tend to be expensive as the Open Bank API only presents transaction data per bank account, resulting in many requests per client call
+- Caching mechanism is very basic, no help for clients making requests >60 seconds apart
 - No distinction between receiving an error code from OpenBank, i.e., in case of an inaccessible account, or simply encountering an empty transaction list. Both cases will return an empty list to the client
 - Currency amounts sent without trailing zeroes
