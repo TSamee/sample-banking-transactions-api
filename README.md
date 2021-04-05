@@ -22,6 +22,7 @@ The API currently supports 3 endpoints for GET requests:
 ## Usage
 - On an embedded Tomcat server in Eclipse, the base URL will default to http://localhost:8080/api
 - When making requests, include the header `Authorization:Basic` and supply a valid set of credentials. Currently only a test user is configured
+- Use src/main/source/security.xml to sign in with test details or configure new user accounts
 
 ## Known issues & limitations
 - Limited to transactions in the Open Bank Sandbox public API
