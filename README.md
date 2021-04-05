@@ -14,7 +14,7 @@ The API currently supports 3 endpoints:
 - Run `mvn package` in the project directory and serve the resulting WAR
 - Alternatively, use Eclipse to download and install a Tomcat 8.5 dev server, right-click the project under Project Explorer and select Run as -> Run on Server
 
-##Testing
+## Testing
 - Point Eclipse JUnit run configurations to the `AllUnitTest` class and run
 - Alternatively, run `mvn clean test` in the project directory to run unit tests, powered by JUnit 5 and Mockito
 
