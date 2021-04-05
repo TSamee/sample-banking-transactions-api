@@ -79,7 +79,7 @@ public class OpenBankTransactionRepo {
 	@Scheduled(cron = "*/3 * * * *")
 	@CacheEvict(value="transactions", allEntries=true)	
 	public void clearCaches() {
-
+		System.out.println("dummy");
 	}
 
 	private List<Transaction> getTransactions(String bankId, String accountId) {
