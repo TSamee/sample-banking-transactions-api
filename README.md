@@ -23,6 +23,6 @@ The API currently supports 3 endpoints:
 
 ## Known issues & limitations
 - Limited to transactions in the Open Bank Sandbox public API
-- Requests tend to be expensive as the Open Bank API only presents transaction data per bank account
+- Need for caching Open Bank responses: requests tend to be expensive as the Open Bank API only presents transaction data per bank account, resulting in many requests per client call
 - No distinction between receiving an error code from OpenBank, i.e., in case of an inaccessible account, or simply encountering an empty transaction list
 - Currency amounts sent without trailing zeroes
