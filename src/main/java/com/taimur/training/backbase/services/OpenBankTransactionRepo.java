@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.taimur.training.backbase.api.controller.TransactionServiceController;
 import com.taimur.training.backbase.api.model.Account;
 import com.taimur.training.backbase.api.model.AccountListWrapper;
 import com.taimur.training.backbase.api.model.Bank;
@@ -31,13 +36,16 @@ import com.taimur.training.backbase.api.model.TransactionListWrapper;
  */
 @Repository
 public class OpenBankTransactionRepo {
-
+	Logger log = LoggerFactory.getLogger(OpenBankTransactionRepo.class);
 	private RestTemplate restTemplate;
 	private List<Transaction> transactions;
 	private final String VIEW = "public";
 	private final String baseUrl = "https://apisandbox.openbankproject.com/obp";
 	private final String version = "v1.2.1";
 
+	@Autowired
+	private CacheManager cacheManager;
+	
 	public OpenBankTransactionRepo(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
@@ -76,9 +84,10 @@ public class OpenBankTransactionRepo {
 		return transactions;
 	}
 
-	@Scheduled(cron = "*/3 * * * *")
-	@CacheEvict(value="transactions", allEntries=true)	
-	public void clearCaches() {
+	@Scheduled(fixedRate = 60000)
+	public void clearCache() {
+		log.info("clearing cache");
+		cacheManager.getCache("transactions").clear();
 	}
 
 	private List<Transaction> getTransactions(String bankId, String accountId) {
