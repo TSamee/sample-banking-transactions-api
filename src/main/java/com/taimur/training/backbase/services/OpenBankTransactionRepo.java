@@ -3,19 +3,10 @@ package com.taimur.training.backbase.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.ServletContextAware;
 
-import com.taimur.training.backbase.api.controller.TransactionServiceController;
 import com.taimur.training.backbase.api.model.Account;
 import com.taimur.training.backbase.api.model.AccountListWrapper;
 import com.taimur.training.backbase.api.model.Bank;
@@ -31,39 +22,36 @@ import com.taimur.training.backbase.api.model.TransactionListWrapper;
  * 
  * Note this service only interacts with public API views--authentication with
  * Open Bank is not supported.
+ * 
+ * TODO: implement caching for responses, as every get...() produces many API calls
  */
-@Service
-public class OpenBankService implements ServletContextAware {
+@Repository
+public class OpenBankTransactionRepo {
 
-	private ServletContext context;
-	private String baseUrl;
-	private String version;
+	private RestTemplate restTemplate;
 	private List<Transaction> transactions;
 	private final String VIEW = "public";
-
-	@Autowired
-	private RestTemplate restTemplate;
-
-	@PostConstruct
-	public void init() {
-		baseUrl = context.getInitParameter("openbank-url");
-		version = context.getInitParameter("openbank-version");
+	private final String baseUrl = "https://apisandbox.openbankproject.com/obp";
+	private final String version = "v1.2.1";
+	
+	public OpenBankTransactionRepo(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
 	}
 
-	public List<Transaction> findAllTransactions() {
+	public List<Transaction> getAllTransactions() {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 
 		List<Bank> banks = getBanks();
 
 		if (!banks.isEmpty()) {
 			for (Bank bank : banks) {
-				transactions.addAll(findAllTransactionsForBank(bank.getId()));
+				transactions.addAll(getAllTransactionsForBank(bank.getId()));
 			};
 		}
 		return transactions;
 	}
 
-	public List<Transaction> findAllTransactionsForBank(String bankId) {
+	public List<Transaction> getAllTransactionsForBank(String bankId) {
 
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		List<Account> accounts = getAccounts(bankId);
@@ -119,11 +107,6 @@ public class OpenBankService implements ServletContextAware {
 			return new ArrayList<Bank>();
 		}
 
-	}
-
-	@Override
-	public void setServletContext(ServletContext servletContext) {
-		context = servletContext;
 	}
 
 }

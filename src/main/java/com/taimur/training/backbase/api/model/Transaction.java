@@ -1,13 +1,14 @@
 package com.taimur.training.backbase.api.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.taimur.training.backbase.services.TransactionDeserializer;
 
 /**
  * POJO for storing Open Bank transaction details in Backbase API format
  */
 @JsonDeserialize(using = TransactionDeserializer.class)
 public class Transaction {
-		
+
 	private String id;
 	private String accountId;
 	private String counterpartyAccount;
@@ -99,5 +100,98 @@ public class Transaction {
 				+ ", transactionCurrency=" + transactionCurrency
 				+ ", transactionType=" + transactionType + ", description="
 				+ description + "]";
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((accountId == null) ? 0 : accountId.hashCode());
+		result = prime * result + ((counterpartyAccount == null) ? 0
+				: counterpartyAccount.hashCode());
+		result = prime * result + ((counterpartyLogoPath == null) ? 0
+				: counterpartyLogoPath.hashCode());
+		result = prime * result + ((counterpartyName == null) ? 0
+				: counterpartyName.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((instructedAmount == null) ? 0
+				: instructedAmount.hashCode());
+		result = prime * result + ((instructedCurrency == null) ? 0
+				: instructedCurrency.hashCode());
+		result = prime * result + ((transactionAmount == null) ? 0
+				: transactionAmount.hashCode());
+		result = prime * result + ((transactionCurrency == null) ? 0
+				: transactionCurrency.hashCode());
+		result = prime * result
+				+ ((transactionType == null) ? 0 : transactionType.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Transaction other = (Transaction) obj;
+		if (accountId == null) {
+			if (other.accountId != null)
+				return false;
+		} else if (!accountId.equals(other.accountId))
+			return false;
+		if (counterpartyAccount == null) {
+			if (other.counterpartyAccount != null)
+				return false;
+		} else if (!counterpartyAccount.equals(other.counterpartyAccount))
+			return false;
+		if (counterpartyLogoPath == null) {
+			if (other.counterpartyLogoPath != null)
+				return false;
+		} else if (!counterpartyLogoPath.equals(other.counterpartyLogoPath))
+			return false;
+		if (counterpartyName == null) {
+			if (other.counterpartyName != null)
+				return false;
+		} else if (!counterpartyName.equals(other.counterpartyName))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (instructedAmount == null) {
+			if (other.instructedAmount != null)
+				return false;
+		} else if (!instructedAmount.equals(other.instructedAmount))
+			return false;
+		if (instructedCurrency == null) {
+			if (other.instructedCurrency != null)
+				return false;
+		} else if (!instructedCurrency.equals(other.instructedCurrency))
+			return false;
+		if (transactionAmount == null) {
+			if (other.transactionAmount != null)
+				return false;
+		} else if (!transactionAmount.equals(other.transactionAmount))
+			return false;
+		if (transactionCurrency == null) {
+			if (other.transactionCurrency != null)
+				return false;
+		} else if (!transactionCurrency.equals(other.transactionCurrency))
+			return false;
+		if (transactionType == null) {
+			if (other.transactionType != null)
+				return false;
+		} else if (!transactionType.equals(other.transactionType))
+			return false;
+		return true;
 	}
 }

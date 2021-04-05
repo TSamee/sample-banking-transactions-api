@@ -1,4 +1,4 @@
-package com.taimur.training.backbase.api.model;
+package com.taimur.training.backbase.services;
 
 import java.io.IOException;
 
@@ -7,12 +7,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.taimur.training.backbase.api.model.Transaction;
 
 /**
  * Custom deserializer for unmarshaling Open Bank transaction data into the
  * Backbase API format
  */
 public class TransactionDeserializer extends StdDeserializer<Transaction> {
+
+	// Generated
+	private static final long serialVersionUID = 3027383232440515997L;
 
 	public TransactionDeserializer() {
 		this(null);
