@@ -13,6 +13,7 @@ The API currently supports 3 endpoints:
 - Clone or download the repo at https://github.com/TSamee/sample-banking-transactions-api
 - Run `mvn package` in the project directory and serve the resulting WAR
 - Alternatively, use Eclipse to download and install a Tomcat 8.5 dev server, right-click the project under Project Explorer and select Run as > Run on Server
+- Ensure src/main/source is on the classpath
 
 ## Testing
 - Point Eclipse JUnit run configurations to the `AllUnitTest` class and run
