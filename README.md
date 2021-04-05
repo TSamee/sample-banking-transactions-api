@@ -3,9 +3,11 @@
 This project serves a REST API conveying transaction data from the Open Bank Sandbox API as simple, flat JSON. Transactions are cached for 60 seconds following each request. The API is secured with basic auth.
 
 The API currently supports 3 endpoints:
-- `{bank}/transactions` -- Returns a list of all transactions for the provided bank ID
-- `{bank}/transactions/types/{type}` -- Returns a list for the provided bank ID, filtered by the provided type
-- `{bank}/transactions/totals` -- Returns a list of total transaction amounts per transaction type
+- `{root}/{bank}/transactions` -- Returns a list of all transactions for the provided bank ID
+- `{root}/{bank}/transactions/types/{type}` -- Returns a list for the provided bank ID, filtered by the provided type
+- `{root}/{bank}/transactions/totals` -- Returns a list of total transaction amounts per transaction type
+
+Where `root` is the application context root (defaults to `api`).
 
 ## Running
 - Prerequisites: JDK 8, Maven 3.6+
