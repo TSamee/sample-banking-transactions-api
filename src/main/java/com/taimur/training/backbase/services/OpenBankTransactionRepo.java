@@ -3,6 +3,9 @@ package com.taimur.training.backbase.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +26,8 @@ import com.taimur.training.backbase.api.model.TransactionListWrapper;
  * Note this service only interacts with public API views--authentication with
  * Open Bank is not supported.
  * 
- * TODO: implement caching for responses, as every get...() produces many API calls
+ * TODO: implement caching for responses, as every get...() produces many API
+ * calls
  */
 @Repository
 public class OpenBankTransactionRepo {
@@ -33,11 +37,12 @@ public class OpenBankTransactionRepo {
 	private final String VIEW = "public";
 	private final String baseUrl = "https://apisandbox.openbankproject.com/obp";
 	private final String version = "v1.2.1";
-	
+
 	public OpenBankTransactionRepo(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
+	@Cacheable({ "transactions" })
 	public List<Transaction> getAllTransactions() {
 		List<Transaction> transactions = new ArrayList<Transaction>();
 
@@ -46,11 +51,13 @@ public class OpenBankTransactionRepo {
 		if (!banks.isEmpty()) {
 			for (Bank bank : banks) {
 				transactions.addAll(getAllTransactionsForBank(bank.getId()));
-			};
+			}
+			;
 		}
 		return transactions;
 	}
 
+	@Cacheable({ "transactions" })
 	public List<Transaction> getAllTransactionsForBank(String bankId) {
 
 		List<Transaction> transactions = new ArrayList<Transaction>();
@@ -67,6 +74,12 @@ public class OpenBankTransactionRepo {
 			}
 		}
 		return transactions;
+	}
+
+	@Scheduled(cron = "*/3 * * * *")
+	@CacheEvict(value="transactions", allEntries=true)	
+	public void clearCaches() {
+
 	}
 
 	private List<Transaction> getTransactions(String bankId, String accountId) {
